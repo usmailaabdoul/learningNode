@@ -19,8 +19,8 @@ class BookService {
   }
 
   async updateById(id, book) {
-    await BookModel.updateOne({ _id: id }, book);
-    return BookModel.findById(id);
+    await BookModel.updateOne({_id: id}, book, { new: true });
+    return this.getByBookId(id);
   };
 
   deleteByBookId(id) {
