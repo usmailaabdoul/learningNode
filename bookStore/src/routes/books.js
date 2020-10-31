@@ -3,18 +3,20 @@ const HttpStatus = require('http-status-codes');
 const BookService = require('../services/books');
 
 router.get('/books', async (req, res, next) => {
-  let books;
   try {
-    books = await BookService.findBooks(req.query);
+    let books = await BookService.findBooks(req.query);
+    return res.status(HttpStatus.StatusCodes.OK).json(books);
   } catch (e) {
     return next(e)
   }
-  return res.status(HttpStatus.StatusCodes.OK).json(books);
 })
 
-router.post('/books', async (req, res, next) => {
+router.post('/book', async (req, res, next) => {
   try {
     let book = await BookService.createBook(req.body);
+    const {genreId} = book;
+    let genre = await GenreService.getByGenreId(genreId);
+    book.genre = genre;
     return res.status(HttpStatus.StatusCodes.OK).json(book);
   } catch (e) {
     console.log(e);
@@ -35,7 +37,7 @@ router.delete('/book/:id', async (req, res, next) => {
 router.put('/book/:id', async (req, res, next) => {
   try {
     let book = await BookService.updateById(req.params.id, req.body);
-    return res.status(HttpStatus.StatusCodes.OK).json({message: 'Succesfully deleted Book', book})
+    return res.status(HttpStatus.StatusCodes.OK).json({message: 'Succesfully updated Book', book})
   } catch (e) {
     console.log(e);
     return res.status(HttpStatus.StatusCodes.BAD_REQUEST).json('Unable to update book')

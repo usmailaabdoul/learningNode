@@ -1,9 +1,6 @@
 const BookModel = require('../models/book');
 
 class BookService {
-  constructor() {
-    this.BookMode = BookModel;
-  }
 
   async createBook(book) {
     const newBook = await BookModel.create(book);

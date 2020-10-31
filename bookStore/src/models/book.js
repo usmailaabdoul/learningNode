@@ -5,9 +5,10 @@ const BookSchema = new mongoose.Schema({
     type: String,
     require: true
   },
-  genre: {
-    type: String,
-    default: null
+  genreId: {
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: 'Genre',
+    required: true
   },
   author: {
     type: String,
