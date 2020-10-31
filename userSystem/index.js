@@ -1,7 +1,7 @@
 const createServer = require('./src/server');
 const setUpMongoose = require('./config/mongoose');
 
-let mongoUrl = 'mongodb://localhost/bookstore'
+let mongoUrl = 'mongodb://localhost/userSystem'
 async function init() {
   await setUpMongoose(mongoUrl);
 
