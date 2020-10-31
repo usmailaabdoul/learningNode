@@ -1,14 +1,31 @@
 const BookModel = require('../models/book');
+const GenreService = require('../services/genres');
 
 class BookService {
 
   async createBook(book) {
     const newBook = await BookModel.create(book);
-    return newBook;
+    let _books = await BookModel.aggregate([
+      {
+        $lookup: {
+          from: 'genres', localField: 'genreId', foreignField: '_id', as: 'genre'
+        }
+      }
+    ])
+    
+    let _newBook = _books.find((b) => `${b._id}` === `${newBook._id}`);
+    return _newBook;
   }
 
-  findBooks (searchQuery = {}) {
-    return BookModel.find(searchQuery);
+  async findBooks (searchQuery = {}) {
+   let books = await BookModel.aggregate([
+      {
+        $lookup: {
+          from: 'genres', localField: 'genreId', foreignField: '_id', as: 'genre'
+        }
+      }
+    ])
+    return books;
   }
 
   getByBookId(id) {

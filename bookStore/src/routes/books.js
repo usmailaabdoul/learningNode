@@ -14,9 +14,6 @@ router.get('/books', async (req, res, next) => {
 router.post('/book', async (req, res, next) => {
   try {
     let book = await BookService.createBook(req.body);
-    const {genreId} = book;
-    let genre = await GenreService.getByGenreId(genreId);
-    book.genre = genre;
     return res.status(HttpStatus.StatusCodes.OK).json(book);
   } catch (e) {
     console.log(e);
