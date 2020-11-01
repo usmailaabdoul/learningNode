@@ -4,7 +4,9 @@ const UserService = require('../services/users');
 
 router.post('/auth/register', async (req, res, next) => {
   try {
-    let user = await UserService.createUser(req.body);
+    let newUser = await UserService.createUser(req.body);
+    let user = await UserService.logInUser(newUser);
+    
     return res.status(HttpStatus.StatusCodes.OK).json(user);
   } catch (e) {
     console.log(e);
@@ -14,7 +16,7 @@ router.post('/auth/register', async (req, res, next) => {
 
 router.post('/auth/login', async (req, res, next) => {
   try {
-    let user = await UserService.createUser(req.body);
+    let user = await UserService.logInUser(req.body);
     return res.status(HttpStatus.StatusCodes.OK).json(user);
   } catch (e) {
     console.log(e);
