@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const HttpStatus = require('http-status-codes');
 const UserService = require('../services/users');
+const authGuard = require('../middleware/auth-guard');
 
 router.get('/users', async (req, res, next) => {
   try {
@@ -8,6 +9,18 @@ router.get('/users', async (req, res, next) => {
     return res.status(HttpStatus.StatusCodes.OK).json(users);
   } catch (e) {
     return next(e)
+  }
+})
+
+router.get('/user/:id/profile', authGuard, async (req, res, next) => {
+  try {
+    let user = await UserService.getByUserId(req.params.id);
+    delete user._doc.passwordHash;
+
+    return res.status(HttpStatus.StatusCodes.OK).json(user)
+  } catch (e) {
+    console.log(e);
+    return res.status(HttpStatus.StatusCodes.BAD_REQUEST).json('Unable to get user')
   }
 })
 

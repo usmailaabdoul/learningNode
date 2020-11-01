@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken");
 const UserService = require('./users');
 
 class AuthService {
@@ -6,6 +7,9 @@ class AuthService {
     return UserService.createUser(user);
   }
 
+  verifyToken(token) {
+    return jwt.verify(token, "longer-secret-is-better");
+  }
 }
 
 const service = new AuthService();
