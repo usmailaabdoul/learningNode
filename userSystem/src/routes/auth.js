@@ -16,8 +16,8 @@ router.post('/auth/register', [
   }
 
   try {
-    let newUser = await UserService.createUser(req.body);
-    let user = await UserService.logInUser(newUser);
+    await UserService.createUser(req.body);
+    let user = await UserService.logInUser(req.body);
     
     return res.status(HttpStatus.StatusCodes.OK).json(user);
   } catch (e) {
